@@ -2,3 +2,4 @@
 ## 学业不精，若有缺陷，请多帮衬
 
 - 实验一：KNN实现对semeion数据集的手写数字识别
+- 实验二：BGD、SGD、岭回归三种方法实现对winequality-white.csv数据的逻辑回归
