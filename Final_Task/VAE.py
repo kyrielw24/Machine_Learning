@@ -195,9 +195,9 @@ class VariationalAutoEncoder_Dense(nn.Module):
 
 def vae_loss(x, gen_x, mean, log_var):
     # 重构项损失
-    # mse_loss = torch.nn.MSELoss()
-    # loss = mse_loss(x, gen_x)
-    loss = F.binary_cross_entropy(gen_x, x, reduction='sum')
+    mse_loss = torch.nn.MSELoss(reduction='sum')
+    loss = mse_loss(x, gen_x)
+    # loss = F.binary_cross_entropy(gen_x, x, reduction='sum')
     # 最小化 q(z|x)  和 p(z) 的距离
     KL_loss = 0.5 * torch.sum(torch.exp(log_var) + torch.pow(mean, 2) - log_var - 1)
     # print("loss_1:", loss.item(), "loss_2:", KL_loss.item())
@@ -254,11 +254,11 @@ for epoch in range(epoches):
             print("epoch : {0} | batch : {1} | batch average(Dense) loss: {2}| batch average(Conv) loss: {3}"
                   .format(epoch + 1, i, lossD.item() / x.shape[0], lossC.item() / x.shape[0]))
 
-        if i == 0:
-            x_concatD = torch.cat([x.view(-1, 1, 28, 28), gen_x_d.view(-1, 1, 28, 28)], dim=3)
-            save_image(x_concatD, './%s/reconstructed-%d.png' % (result_dir_Dense, epoch + 1))
-            x_concatC = torch.cat([x.view(-1, 1, 28, 28), gen_x_c.view(-1, 1, 28, 28)], dim=3)
-            save_image(x_concatC, './%s/reconstructed-%d.png' % (result_dir_Conv, epoch + 1))
+        # if i == 0:
+        #     x_concatD = torch.cat([x.view(-1, 1, 28, 28), gen_x_d.view(-1, 1, 28, 28)], dim=3)
+        #     save_image(x_concatD, './%s/reconstructed-%d.png' % (result_dir_Dense, epoch + 1))
+        #     x_concatC = torch.cat([x.view(-1, 1, 28, 28), gen_x_c.view(-1, 1, 28, 28)], dim=3)
+        #     save_image(x_concatC, './%s/reconstructed-%d.png' % (result_dir_Conv, epoch + 1))
 
     # 输出epoch信息
     train_lossD.append(np.sum(batch_lossD) / number)
